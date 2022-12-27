@@ -12,6 +12,13 @@ import androidx.compose.ui.graphics.Color
 
 /**
  * Created By Kevin Zou On 2022/12/24
+ *
+ * Wrap the real content into a box with weight set and align the content at center
+ *
+ * @param background the background color of the box
+ * @param weight the weight of the box
+ * @param onClick the action to be executed when the box is clicked
+ * @param content the real content of the box
  */
 @Composable
 fun RowScope.SwipeContent(

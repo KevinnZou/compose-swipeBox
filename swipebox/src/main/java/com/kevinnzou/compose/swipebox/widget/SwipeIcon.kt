@@ -16,6 +16,10 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Created By Kevin Zou On 2022/12/23
+ *
+ * Wrap the Icon into the [SwipeContent] with required size so that the icon size will
+ * not change with the outside container
+ *
  */
 @Composable
 fun RowScope.SwipeIcon(
