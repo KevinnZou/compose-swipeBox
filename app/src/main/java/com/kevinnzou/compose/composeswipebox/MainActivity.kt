@@ -33,6 +33,8 @@ class MainActivity : ComponentActivity() {
                         SwipeBoxAtEnd2()
                         Spacer()
                         SwipeBoxAtBoth()
+                        Spacer()
+                        SwipeBoxWithText()
                     }
                 }
             }
