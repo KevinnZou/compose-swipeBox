@@ -54,7 +54,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.github.kevinnzou'
                 artifactId = 'compose-swipebox'
-                version = '0.0.1'
+                version = '0.0.3'
             }
             // Creates a Maven publication called “debug”.
 //            debug(MavenPublication) {

@@ -115,7 +115,7 @@ fun SwipeBoxAtBoth() {
 
 # Download
 
-The Current Release Version is 0.0.2. For future release, please refer to the release session of the
+The Current Release Version is 0.0.3. For future release, please refer to the release session of the
 github repository.
 
 ``` kotlin
@@ -127,7 +127,7 @@ allprojects {
 }
 
 dependencies {
-    implementation("com.github.kevinnzou:compose-swipeBox:0.0.2")
+    implementation("com.github.kevinnzou:compose-swipeBox:0.0.3")
 }
 
 ```
