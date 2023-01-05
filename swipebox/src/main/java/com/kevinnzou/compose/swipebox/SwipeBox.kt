@@ -25,13 +25,21 @@ import kotlin.math.absoluteValue
  * @param modifier The modifier to be applied to the SwipeBox.
  * @param swipeDirection The direction to swipe to. If the direction is [SwipeDirection.EndToStart], then only the endContent will be shown.
  * @param startContentWidth The width of the start content which will be shown when the swipe direction is StartToEnd or Both.
- * @param startContent The content of the start content. It will be given the swipeableState and the swipe progress of the start content, you can use them to update the content.
+ * @param startContent The content of the start content.
+ * Two parameters will be provided to that content:
+ * 1. swipeableState: [SwipeableState], which can be used to change the swipe state.
+ * 2. startSwipeProgress: [Float], which represent the progress of the swipe of the start content, 0f for null startContent.
+ *
  * Note that the content will be layout in a [RowScope] with mutable width. Thus, for sub content inside it, you have to use the [weight] modifier to determine the width of the content
  * instead of use the [width] modifier directly. Also, since the width of the container will change with swipe progress, the content inside the sub container have to use the [requiredWidth]
  * modifier to avoid the abnormal recompose to that width change. Like size or visibility change.
  * For content with just icon or text, I would recommend you to use the [SwipeIcon] and [SwipeText] which setup the size restriction for you and you only need to set the real content.
  * @param endContentWidth The width of the end content which will be shown when the swipe direction is EndToStart or Both.
- * @param endContent The content of the end content. It will be given the swipeableState and the swipe progress of the end content, you can use them to update the content.
+ * @param endContent The content of the end content.
+ * Two parameters will be provided to that content:
+ * 1. swipeableState: [SwipeableState], which can be used to change the swipe state.
+ * 2. endSwipeProgress: [Float], which represent the progress of the swipe of the end content, 0f for null endContent.
+ *
  * Note that the content will be layout in a [RowScope] with mutable width. Thus, for sub content inside it, you have to use the [weight] modifier to determine the width of the content
  * instead of use the [width] modifier directly. Also, since the width of the container will change with swipe progress, the content inside the sub container have to use the [requiredWidth]
  * modifier to avoid the abnormal recompose to that width change. Like size or visibility change.
@@ -40,6 +48,10 @@ import kotlin.math.absoluteValue
  * as a lambda that takes two states and returns the threshold between them in the form of a [ThresholdConfig].
  * Note that the order of the states corresponds to the swipe direction.
  * @param content The main content that will be shown at max width when there is no swipe action.
+ * It will be provided three parameters:
+ * 1. swipeableState: [SwipeableState], which can be used to change the swipe state.
+ * 2. startSwipeProgress: [Float], which represent the progress of the swipe of the start content, 0f for null startContent.
+ * 3. endSwipeProgress: [Float], which represent the progress of the swipe of the end content, 0f for null endContent.
  */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
