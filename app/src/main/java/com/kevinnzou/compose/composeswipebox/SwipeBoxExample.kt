@@ -195,7 +195,7 @@ fun SwipeBoxWithText() {
     SwipeBox(
         modifier = Modifier.fillMaxWidth(),
         swipeDirection = SwipeDirection.EndToStart,
-        endContentWidth = 120.dp,
+        endContentWidth = 140.dp,
         endContent = { swipeableState, endSwipeProgress ->
             SwipeText(background = Color(0xFFFFB133),
                 weight = 1f,
@@ -205,7 +205,9 @@ fun SwipeBoxWithText() {
                     }
                 }) {
                 Text(
-                    text = "收藏", fontSize = 12.sp, maxLines = 1,
+                    text = "移至\n收藏夹",
+                    modifier = Modifier.requiredWidth(42.dp),
+                    fontSize = 12.sp, maxLines = 2,
                     textAlign = TextAlign.Center, color = Color.White, fontWeight = FontWeight.Bold,
                 )
             }
@@ -217,7 +219,9 @@ fun SwipeBoxWithText() {
                     }
                 }) {
                 Text(
-                    text = "删除", fontSize = 12.sp, maxLines = 1,
+                    text = "删除",
+                    modifier = Modifier.requiredWidth(28.dp),
+                    fontSize = 12.sp, maxLines = 1,
                     textAlign = TextAlign.Center, color = Color.White, fontWeight = FontWeight.Bold,
                 )
             }
