@@ -1,13 +1,16 @@
 package com.kevinnzou.compose.composeswipebox
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.SwipeableState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,12 +31,15 @@ import kotlinx.coroutines.launch
  */
 
 @Composable
-fun mainContent(text: String = "Main Content") {
+fun mainContent(text: String = "Main Content", onClick: (() -> Unit)? = null) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(90.dp)
-            .background(Color(148, 184, 216)),
+            .background(Color(148, 184, 216))
+            .clickable(enabled = onClick != null) {
+                onClick?.invoke()
+            },
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -190,7 +196,7 @@ fun PreviewSwipeBoxAtBoth() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SwipeBoxWithText() {
+fun SwipeBoxWithText(onSwipeStateChanged: (SwipeableState<Int>) -> Unit = {}) {
     val coroutineScope = rememberCoroutineScope()
     SwipeBox(
         modifier = Modifier.fillMaxWidth(),
@@ -226,11 +232,16 @@ fun SwipeBoxWithText() {
                 )
             }
         }
-    ) { _, _, _ ->
+    ) { state, _, _ ->
+        // callback on parent when the state targetValue changes which means it is swiping to another state.
+        LaunchedEffect(state.targetValue) {
+            onSwipeStateChanged(state)
+        }
         mainContent("Swipe Left Text")
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
 fun PreviewSwipeBoxWithText() {
