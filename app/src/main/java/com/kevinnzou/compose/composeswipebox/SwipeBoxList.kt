@@ -1,7 +1,5 @@
 package com.kevinnzou.compose.composeswipebox
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
@@ -31,7 +29,7 @@ fun SwipeBoxList() {
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             /**
-             * we need to intercept teh scroll event and check whether there is an open box
+             * we need to intercept the scroll event and check whether there is an open box
              * if so ,then we need to swipe that box back and reset the state
              */
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
