@@ -188,7 +188,7 @@ For full example, please refer to [SwipeBoxList](https://github.com/KevinnZou/co
 
 # Download
 
-The Current Release Version is 0.0.3. For future release, please refer to the release session of the
+The Current Release Version is 1.0.0. For future release, please refer to the release session of the
 github repository.
 
 ``` kotlin
@@ -200,7 +200,7 @@ allprojects {
 }
 
 dependencies {
-    implementation("com.github.kevinnzou:compose-swipeBox:0.0.3")
+    implementation("com.github.kevinnzou:compose-swipeBox:1.0.0")
 }
 
 ```
