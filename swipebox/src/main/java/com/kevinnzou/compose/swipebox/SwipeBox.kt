@@ -4,8 +4,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -47,6 +46,8 @@ import kotlin.math.absoluteValue
  * @param thresholds Specifies where the thresholds between the states are. The thresholds will be used to determine which state to animate to when swiping stops. This is represented
  * as a lambda that takes two states and returns the threshold between them in the form of a [ThresholdConfig].
  * Note that the order of the states corresponds to the swipe direction.
+ *
+ * @param keepStateWhenConfigChange determines whether the swipe state will be kept when the config changes or recycled by lazy column. Default is false.
  * @param content The main content that will be shown at max width when there is no swipe action.
  * It will be provided three parameters:
  * 1. swipeableState: [SwipeableState], which can be used to change the swipe state.
@@ -63,9 +64,14 @@ fun SwipeBox(
     endContentWidth: Dp = 0.dp,
     endContent: @Composable (RowScope.(swipeableState: SwipeableState<Int>, endSwipeProgress: Float) -> Unit)? = null,
     thresholds: (from: Int, to: Int) -> ThresholdConfig = { _, _ -> FixedThreshold(12.dp) },
+    keepStateWhenConfigChange: Boolean = false,
     content: @Composable BoxScope.(swipeableState: SwipeableState<Int>, startSwipeProgress: Float, endSwipeProgress: Float) -> Unit,
 ) {
-    val swipeableState = rememberSwipeableState(initialValue = 0)
+    val swipeableState = if (keepStateWhenConfigChange)
+        rememberSwipeableState(initialValue = 0)
+    else remember {
+        SwipeableState(0)
+    }
     val startWidthPx = with(LocalDensity.current) { startContentWidth.toPx() }
     val endWidthPx = with(LocalDensity.current) { endContentWidth.toPx() }
     val anchors = when (swipeDirection) {
@@ -101,7 +107,6 @@ fun SwipeBox(
     )
     val startContentLiveWidth = startContentWidth * startSwipeProgress
     val endContentLiveWidth = endContentWidth * endSwipeProgress
-
     Box(
         modifier = modifier
             .height(IntrinsicSize.Min)
