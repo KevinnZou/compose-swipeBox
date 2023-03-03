@@ -22,6 +22,7 @@ import kotlin.math.absoluteValue
  * Designed a box layout that you can swipe to show action boxes from both directions
  *
  * @param modifier The modifier to be applied to the SwipeBox.
+ * @param state The state object to be used to control the SwipeBox.
  * @param swipeDirection The direction to swipe to. If the direction is [SwipeDirection.EndToStart], then only the endContent will be shown.
  * @param startContentWidth The width of the start content which will be shown when the swipe direction is StartToEnd or Both.
  * @param startContent The content of the start content.
@@ -47,7 +48,6 @@ import kotlin.math.absoluteValue
  * as a lambda that takes two states and returns the threshold between them in the form of a [ThresholdConfig].
  * Note that the order of the states corresponds to the swipe direction.
  *
- * @param keepStateWhenConfigChange determines whether the swipe state will be kept when the config changes or recycled by lazy column. Default is false.
  * @param content The main content that will be shown at max width when there is no swipe action.
  * It will be provided three parameters:
  * 1. swipeableState: [SwipeableState], which can be used to change the swipe state.
@@ -58,20 +58,16 @@ import kotlin.math.absoluteValue
 @Composable
 fun SwipeBox(
     modifier: Modifier = Modifier,
+    state: SwipeableState<Int> = rememberSwipeableState(initialValue = 0),
     swipeDirection: SwipeDirection = SwipeDirection.EndToStart,
     startContentWidth: Dp = 0.dp,
     startContent: @Composable (RowScope.(swipeableState: SwipeableState<Int>, startSwipeProgress: Float) -> Unit)? = null,
     endContentWidth: Dp = 0.dp,
     endContent: @Composable (RowScope.(swipeableState: SwipeableState<Int>, endSwipeProgress: Float) -> Unit)? = null,
     thresholds: (from: Int, to: Int) -> ThresholdConfig = { _, _ -> FixedThreshold(12.dp) },
-    keepStateWhenConfigChange: Boolean = false,
     content: @Composable BoxScope.(swipeableState: SwipeableState<Int>, startSwipeProgress: Float, endSwipeProgress: Float) -> Unit,
 ) {
-    val swipeableState = if (keepStateWhenConfigChange)
-        rememberSwipeableState(initialValue = 0)
-    else remember {
-        SwipeableState(0)
-    }
+    val swipeableState = state
     val startWidthPx = with(LocalDensity.current) { startContentWidth.toPx() }
     val endWidthPx = with(LocalDensity.current) { endContentWidth.toPx() }
     val anchors = when (swipeDirection) {

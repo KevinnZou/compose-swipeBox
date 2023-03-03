@@ -2,6 +2,7 @@ package com.kevinnzou.compose.composeswipebox
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SwipeableState
 import androidx.compose.runtime.*
@@ -44,33 +45,45 @@ fun SwipeBoxList() {
         }
     }
 
+    val data = remember {
+        mutableStateListOf<Int>().apply {
+            (1 until 20).forEach {
+                add(it)
+            }
+        }
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(30.dp)
             .nestedScroll(nestedScrollConnection)
     ) {
-        items(20) { index ->
-            Column() {
-                Spacer()
-                SwipeBoxWithText() {
-                    /**
-                     * if it is swiping back and it equals to the current state
-                     * it means that the current open box is closed, then we set the state to null
-                     */
-                    if (it.targetValue == 0 && currentSwipeState == it) {
-                        currentSwipeState = null
-                        return@SwipeBoxWithText
-                    }
-                    // if there is no opening box, we set it to this opening one
-                    if (currentSwipeState == null) {
+        itemsIndexed(data) { index, item ->
+            Spacer()
+            SwipeBoxWithText(
+                item,
+                onDelete = {
+                    data.remove(it)
+                    currentSwipeState = null
+                }
+            ) {
+                /**
+                 * if it is swiping back and it equals to the current state
+                 * it means that the current open box is closed, then we set the state to null
+                 */
+                if (it.targetValue == 0 && currentSwipeState == it) {
+                    currentSwipeState = null
+                    return@SwipeBoxWithText
+                }
+                // if there is no opening box, we set it to this opening one
+                if (currentSwipeState == null) {
+                    currentSwipeState = it
+                } else {
+                    // there already had one box opening, we need to swipe it back and then update the state to new one
+                    coroutineScope.launch {
+                        currentSwipeState!!.animateTo(0)
                         currentSwipeState = it
-                    } else {
-                        // there already had one box opening, we need to swipe it back and then update the state to new one
-                        coroutineScope.launch {
-                            currentSwipeState!!.animateTo(0)
-                            currentSwipeState = it
-                        }
                     }
                 }
             }

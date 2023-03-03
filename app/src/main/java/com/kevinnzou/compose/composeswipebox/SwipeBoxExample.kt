@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -196,10 +197,18 @@ fun PreviewSwipeBoxAtBoth() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SwipeBoxWithText(onSwipeStateChanged: (SwipeableState<Int>) -> Unit = {}) {
+fun SwipeBoxWithText(
+    id: Int = 0,
+    onDelete: (Int) -> Unit = {},
+    onSwipeStateChanged: (SwipeableState<Int>) -> Unit = {}
+) {
     val coroutineScope = rememberCoroutineScope()
+    val swipeableState = remember(id) {
+        SwipeableState(0)
+    }
     SwipeBox(
         modifier = Modifier.fillMaxWidth(),
+        state = swipeableState,
         swipeDirection = SwipeDirection.EndToStart,
         endContentWidth = 140.dp,
         endContent = { swipeableState, endSwipeProgress ->
@@ -222,6 +231,7 @@ fun SwipeBoxWithText(onSwipeStateChanged: (SwipeableState<Int>) -> Unit = {}) {
                 onClick = {
                     coroutineScope.launch {
                         swipeableState.animateTo(0)
+                        onDelete(id)
                     }
                 }) {
                 Text(
@@ -232,12 +242,12 @@ fun SwipeBoxWithText(onSwipeStateChanged: (SwipeableState<Int>) -> Unit = {}) {
                 )
             }
         }
-    ) { state, _, _ ->
+    ) { _, _, _ ->
         // callback on parent when the state targetValue changes which means it is swiping to another state.
-        LaunchedEffect(state.targetValue) {
-            onSwipeStateChanged(state)
+        LaunchedEffect(swipeableState.targetValue) {
+            onSwipeStateChanged(swipeableState)
         }
-        mainContent("Swipe Left Text")
+        mainContent("Swipe Left Text $id")
     }
 }
 
