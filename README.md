@@ -188,19 +188,18 @@ For full example, please refer to [SwipeBoxList](https://github.com/KevinnZou/co
 
 # Download
 
-The Current Release Version is 1.1.0. For future release, please refer to the release session of the
+The Current Release Version is 1.2.0. For future release, please refer to the release session of the
 github repository.
 
 ``` kotlin
 allprojects {
   repositories {
-    ...
-    maven { url 'https://jitpack.io' }
+    mavenCentral()
   }
 }
 
 dependencies {
-    implementation("com.github.kevinnzou:compose-swipeBox:1.1.0")
+    implementation("io.github.kevinnzou:compose-swipeBox:1.2.0")
 }
 
 ```
