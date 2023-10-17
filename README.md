@@ -1,4 +1,6 @@
 # compose-swipeBox
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.kevinnzou/compose-swipebox.svg)](https://search.maven.org/artifact/io.github.kevinnzou/compose-swipebox)
+![badge-android](http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat)
 
 This Library provides a composable widget SwipeBox that can be swiped left or right to show the
 action buttons. It supports the custom designs for the action buttons. It also provides the
@@ -187,6 +189,7 @@ After that, your list will react to the list scroll and update the swipeboxs' st
 For full example, please refer to [SwipeBoxList](https://github.com/KevinnZou/compose-swipeBox/blob/main/app/src/main/java/com/kevinnzou/compose/composeswipebox/SwipeBoxList.kt)
 
 # Download
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.kevinnzou/compose-swipebox.svg)](https://search.maven.org/artifact/io.github.kevinnzou/compose-swipebox)
 
 The Current Release Version is 1.2.0. For future release, please refer to the release session of the
 github repository.
@@ -199,7 +202,7 @@ allprojects {
 }
 
 dependencies {
-    implementation("io.github.kevinnzou:compose-swipeBox:1.2.0")
+    implementation("io.github.kevinnzou:compose-swipebox:1.2.0")
 }
 
 ```
