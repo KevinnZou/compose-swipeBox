@@ -67,7 +67,6 @@ fun SwipeBox(
     thresholds: (from: Int, to: Int) -> ThresholdConfig = { _, _ -> FixedThreshold(12.dp) },
     content: @Composable BoxScope.(swipeableState: SwipeableState<Int>, startSwipeProgress: Float, endSwipeProgress: Float) -> Unit,
 ) {
-    val swipeableState = state
     val startWidthPx = with(LocalDensity.current) { startContentWidth.toPx() }
     val endWidthPx = with(LocalDensity.current) { endContentWidth.toPx() }
     val anchors = when (swipeDirection) {
@@ -75,10 +74,12 @@ fun SwipeBox(
             0f to 0,
             startWidthPx to 1
         )
+
         SwipeDirection.EndToStart -> mapOf(
             0f to 0,
             -endWidthPx to 1
         )
+
         SwipeDirection.Both -> mapOf(
             0f to 0,
             startWidthPx to 1,
@@ -92,14 +93,14 @@ fun SwipeBox(
         SwipeDirection.Both -> Float.NEGATIVE_INFINITY..Float.POSITIVE_INFINITY
     }
     val startSwipeProgress by animateFloatAsState(
-        targetValue = if (swipeableState.offset.value > 0f) {
-            (swipeableState.offset.value / startWidthPx).absoluteValue
-        } else 0f
+        targetValue = if (state.offset.value > 0f) {
+            (state.offset.value / startWidthPx).absoluteValue
+        } else 0f, label = "startSwipeProgress"
     )
     val endSwipeProgress by animateFloatAsState(
-        targetValue = if (swipeableState.offset.value < 0f) {
-            (swipeableState.offset.value / endWidthPx).absoluteValue
-        } else 0f
+        targetValue = if (state.offset.value < 0f) {
+            (state.offset.value / endWidthPx).absoluteValue
+        } else 0f, label = "endSwipeProgress"
     )
     val startContentLiveWidth = startContentWidth * startSwipeProgress
     val endContentLiveWidth = endContentWidth * endSwipeProgress
@@ -130,7 +131,7 @@ fun SwipeBox(
                         .width(startContentLiveWidth)
                         .clipToBounds()
                 ) {
-                    startContent(swipeableState, startSwipeProgress)
+                    startContent(state, startSwipeProgress)
                 }
             }
             if (swipeDirection in listOf(
@@ -144,7 +145,7 @@ fun SwipeBox(
                         .width(endContentLiveWidth)
                         .clipToBounds()
                 ) {
-                    endContent(swipeableState, endSwipeProgress)
+                    endContent(state, endSwipeProgress)
                 }
             }
         } // Bottom Layer
@@ -153,18 +154,18 @@ fun SwipeBox(
             .wrapContentHeight()
             .offset {
                 IntOffset(
-                    swipeableState.offset.value
+                    state.offset.value
                         .coerceIn(offsetRange)
                         .toInt(), 0
                 )
             }
             .swipeable(
-                state = swipeableState,
+                state = state,
                 anchors = anchors,
                 orientation = Orientation.Horizontal,
                 thresholds = thresholds
             )) {
-            content(swipeableState, startSwipeProgress, endSwipeProgress)
+            content(state, startSwipeProgress, endSwipeProgress)
         }
     }
 }
