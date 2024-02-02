@@ -33,7 +33,7 @@ import kotlin.math.roundToInt
  * @param startContentWidth The width of the start content which will be shown when the swipe direction is StartToEnd or Both.
  * @param startContent The content of the start content.
  * Two parameters will be provided to that content:
- * 1. swipeableState: [SwipeableState], which can be used to change the swipe state.
+ * 1. anchoredDraggableState: [AnchoredDraggableState], which can be used to change the swipe state.
  * 2. startSwipeProgress: [Float], which represent the progress of the swipe of the start content, 0f for null startContent.
  *
  * Note that the content will be layout in a [RowScope] with mutable width. Thus, for sub content inside it, you have to use the [weight] modifier to determine the width of the content
@@ -43,20 +43,16 @@ import kotlin.math.roundToInt
  * @param endContentWidth The width of the end content which will be shown when the swipe direction is EndToStart or Both.
  * @param endContent The content of the end content.
  * Two parameters will be provided to that content:
- * 1. swipeableState: [SwipeableState], which can be used to change the swipe state.
+ * 1. anchoredDraggableState: [AnchoredDraggableState], which can be used to change the swipe state.
  * 2. endSwipeProgress: [Float], which represent the progress of the swipe of the end content, 0f for null endContent.
  *
  * Note that the content will be layout in a [RowScope] with mutable width. Thus, for sub content inside it, you have to use the [weight] modifier to determine the width of the content
  * instead of use the [width] modifier directly. Also, since the width of the container will change with swipe progress, the content inside the sub container have to use the [requiredWidth]
  * modifier to avoid the abnormal recompose to that width change. Like size or visibility change.
  * For content with just icon or text, I would recommend you to use the [SwipeIcon] and [SwipeText] which setup the size restriction for you and you only need to set the real content.
- * @param thresholds Specifies where the thresholds between the states are. The thresholds will be used to determine which state to animate to when swiping stops. This is represented
- * as a lambda that takes two states and returns the threshold between them in the form of a [ThresholdConfig].
- * Note that the order of the states corresponds to the swipe direction.
- *
  * @param content The main content that will be shown at max width when there is no swipe action.
  * It will be provided three parameters:
- * 1. swipeableState: [SwipeableState], which can be used to change the swipe state.
+ * 1. anchoredDraggableState: [AnchoredDraggableState], which can be used to change the swipe state.
  * 2. startSwipeProgress: [Float], which represent the progress of the swipe of the start content, 0f for null startContent.
  * 3. endSwipeProgress: [Float], which represent the progress of the swipe of the end content, 0f for null endContent.
  */
@@ -183,6 +179,20 @@ enum class DragAnchors {
     End,
 }
 
+/**
+ * Create and [remember] a [AnchoredDraggableState] with the default animation clock.
+ *
+ * @param initialValue The initial value of the state.
+ * @param positionalThreshold The positional threshold, in px, to be used when calculating the
+ * target state while a drag is in progress and when settling after the drag ends. This is the
+ * distance from the start of a transition. It will be, depending on the direction of the
+ * interaction, added or subtracted from/to the origin offset. It should always be a positive value.
+ * @param velocityThreshold The velocity threshold (in px per second) that the end velocity has to
+ * exceed in order to animate to the next state, even if the [positionalThreshold] has not been
+ * reached.
+ * @param animationSpec The default animation that will be used to animate to a new state.
+ * @param confirmValueChange Optional callback invoked to confirm or veto a pending state change.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun rememberAnchoredDraggableState(
@@ -202,6 +212,21 @@ fun rememberAnchoredDraggableState(
     }
 }
 
+/**
+ * Create and [remember] a [AnchoredDraggableState] with the given key and default animation clock.
+ *
+ * @param key The key to be used to save and restore the state.
+ * @param initialValue The initial value of the state.
+ * @param positionalThreshold The positional threshold, in px, to be used when calculating the
+ * target state while a drag is in progress and when settling after the drag ends. This is the
+ * distance from the start of a transition. It will be, depending on the direction of the
+ * interaction, added or subtracted from/to the origin offset. It should always be a positive value.
+ * @param velocityThreshold The velocity threshold (in px per second) that the end velocity has to
+ * exceed in order to animate to the next state, even if the [positionalThreshold] has not been
+ * reached.
+ * @param animationSpec The default animation that will be used to animate to a new state.
+ * @param confirmValueChange Optional callback invoked to confirm or veto a pending state change.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun rememberAnchoredDraggableState(
