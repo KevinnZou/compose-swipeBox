@@ -83,19 +83,13 @@ fun AnchoredDragBoxList() {
                 }
             ) {
                 /**
-                 * Init State, we don't need to do anything
+                 * if it is at init state or swiping back, we don't need to do anything
                  */
-                if (it.offset == 0f) {
-                    return@AnchoredDragBoxWithText
-                }
-                /**
-                 * if it is swiping back, we don't need to do anything
-                 */
-                if (it.targetValue == DragAnchors.Center) {
+                if (it.offset == 0f || it.targetValue == DragAnchors.Center) {
                     return@AnchoredDragBoxWithText
                 }
                 // if there is no opening box, we set it to this opening one
-                if (currentDragState == null || (currentDragState!!.currentValue == DragAnchors.Center && currentDragState!!.targetValue == DragAnchors.Center)) {
+                if (currentDragState == null || (currentDragState!!.offset == 0f)) {
                     currentDragState = it
                 } else {
                     val lastState = currentDragState
