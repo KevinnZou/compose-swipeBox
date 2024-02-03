@@ -1,9 +1,16 @@
 package com.kevinnzou.compose.composeswipebox
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -32,14 +39,45 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "home") {
                         composable("home") {
-                            mainScreen(navController = navController)
+                            dragBoxScreen(navController = navController)
                         }
                         composable("list") {
-                            SwipeBoxList()
+                            AnchoredDragBoxList()
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun dragBoxScreen(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 15.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        AnchoredDragBoxAtEnd()
+        Spacer()
+        AnchoredDragBoxAtStart()
+        Spacer()
+        AnchoredDragBoxAtEnd2()
+        Spacer()
+        AnchoredDragBoxAtBoth()
+        Spacer()
+        AnchoredDragBoxWithText(onAnchoredDragStateChanged = {
+            Log.d(
+                "KZ",
+                "Outer AnchoredDragBox TargetValue: $it ${it.currentValue} ${it.targetValue}"
+            )
+        })
+        Spacer()
+        mainContent("AnchoredDragBox List") {
+            navController.navigate("list")
         }
     }
 }
