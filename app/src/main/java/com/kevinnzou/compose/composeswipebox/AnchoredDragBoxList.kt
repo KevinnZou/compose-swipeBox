@@ -82,27 +82,22 @@ fun AnchoredDragBoxList() {
                     currentDragState = null
                 }
             ) {
-                Log.d("KZ", "AnchoredDragBoxList $index: ${it.targetValue}, ${it}, $currentDragState ${currentDragState?.currentValue} ${currentDragState?.targetValue}")
                 /**
                  * Init State, we don't need to do anything
                  */
                 if (it.offset == 0f) {
-                    Log.d("KZ", "AnchoredDragBoxList $index: Init State ${it.offset}")
                     return@AnchoredDragBoxWithText
                 }
                 /**
                  * if it is swiping back, we don't need to do anything
                  */
                 if (it.targetValue == DragAnchors.Center) {
-                    Log.d("KZ", "AnchoredDragBoxList $index: Swiping Back")
                     return@AnchoredDragBoxWithText
                 }
                 // if there is no opening box, we set it to this opening one
                 if (currentDragState == null || (currentDragState!!.currentValue == DragAnchors.Center && currentDragState!!.targetValue == DragAnchors.Center)) {
-                    Log.d("KZ", "AnchoredDragBoxList $index: Set State to $it")
                     currentDragState = it
                 } else {
-                    Log.d("KZ", "AnchoredDragBoxList $index: change $currentDragState to $it")
                     val lastState = currentDragState
                     currentDragState = it
                     // there already had one box opening, we need to swipe it back and then update the state to new one
@@ -112,7 +107,6 @@ fun AnchoredDragBoxList() {
                         }
                     }
                 }
-                Log.d("KZ", "AnchoredDragBoxList $index: Last State $currentDragState")
             }
         }
     }
