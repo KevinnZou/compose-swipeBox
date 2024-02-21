@@ -8,6 +8,75 @@ composable widgets SwipeIcon and SwipeText for easy design of action buttons.
 
 <img src="media/swipebox.gif" width=300> <img src="media/swipeboxlist.gif" width=300>
 
+# Migrate to AnchoredDragBox
+Since Modifier.swipeable is deprecated in compose 1.6.0, this library provides a new composable widget AnchoredDragBox 
+that can be dragged to show the action buttons in version 1.3.0. 
+It is implemented by using the Modifier.anchoredDraggable and AnchoredDraggableState which is the new way to implement the swipeable widget in compose 1.6.0.
+
+## Basic Usage
+To use the AnchoredDragBox, you can simply replace the SwipeBox with AnchoredDragBox and fix the parameters. A sample would be like this:
+```kotlin
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun AnchoredDragBoxAtEnd() {
+    val coroutineScope = rememberCoroutineScope()
+    AnchoredDragBox(
+        modifier = Modifier.fillMaxWidth(),
+        swipeDirection = SwipeDirection.EndToStart,
+        endContentWidth = 60.dp,
+        endContent = { anchoredDraggableState, endSwipeProgress ->
+            DeleteIcon {
+                coroutineScope.launch {
+                    anchoredDraggableState.animateTo(DragAnchors.Center)
+                }
+            }
+        }
+    ) { _, _, _ ->
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(90.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Swipe Left", color = Color.White, fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+```
+
+Please refer to [Migrate from Swipeable to AnchoredDraggable](https://developer.android.com/jetpack/compose/touch-input/pointer-input/migrate-swipeable) for more information.
+
+## List
+There also need some changes to make the list work with the AnchoredDragBox. The main change is the implementation of onAnchoredDragStateChanged:
+```kotlin
+val onAnchoredDragStateChanged = { state : AnchoredDraggableState ->
+    /**
+     * if it is at init state or swiping back, we don't need to do anything
+     */
+    if (it.offset == 0f || it.targetValue == DragAnchors.Center) {
+        return@AnchoredDragBoxWithText
+    }
+    // if there is no opening box, we set it to this opening one
+    if (currentDragState == null || (currentDragState!!.offset == 0f)) {
+        currentDragState = it
+    } else {
+        val lastState = currentDragState
+        currentDragState = it
+        // there already had one box opening, we need to swipe it back and then update the state to new one
+        if (lastState?.targetValue != DragAnchors.Center) {
+            coroutineScope.launch {
+                lastState?.animateTo(DragAnchors.Center)
+            }
+        }
+    }
+}
+```
+
+Please refer to [AnchoredDragBoxList](https://github.com/KevinnZou/compose-swipeBox/blob/main/app/src/main/java/com/kevinnzou/compose/composeswipebox/AnchoredDragBoxList.kt) for full example.
+
 # Usage
 
 The core component of this library is
