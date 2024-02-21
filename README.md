@@ -271,7 +271,7 @@ allprojects {
 }
 
 dependencies {
-    implementation("io.github.kevinnzou:compose-swipebox:1.2.0")
+    implementation("io.github.kevinnzou:compose-swipebox:1.3.0")
 }
 
 ```
