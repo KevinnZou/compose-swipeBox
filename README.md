@@ -2,13 +2,13 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.kevinnzou/compose-swipebox.svg)](https://search.maven.org/artifact/io.github.kevinnzou/compose-swipebox)
 ![badge-android](http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat)
 
+**Note**: This library also has a Compose Multiplatform version, please refer to [compose-swipebox-multiplatform](https://github.com/KevinnZou/compose-swipebox-multiplatform)
+
 This Library provides a composable widget SwipeBox that can be swiped left or right to show the
 action buttons. It supports the custom designs for the action buttons. It also provides the
 composable widgets SwipeIcon and SwipeText for easy design of action buttons.
 
 <img src="media/swipebox.gif" width=300> <img src="media/swipeboxlist.gif" width=300>
-
-**Note**: This library also has a Compose Multiplatform version, please refer to [compose-swipebox-multiplatform](https://github.com/KevinnZou/compose-swipebox-multiplatform)
 
 # Migrate to AnchoredDragBox
 Since Modifier.swipeable is deprecated in compose 1.6.0, this library provides a new composable widget AnchoredDragBox 
