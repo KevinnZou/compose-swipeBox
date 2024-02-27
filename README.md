@@ -8,6 +8,8 @@ composable widgets SwipeIcon and SwipeText for easy design of action buttons.
 
 <img src="media/swipebox.gif" width=300> <img src="media/swipeboxlist.gif" width=300>
 
+**Note**: This library also has a Compose Multiplatform version, please refer to [compose-swipebox-multiplatform](https://github.com/KevinnZou/compose-swipebox-multiplatform)
+
 # Migrate to AnchoredDragBox
 Since Modifier.swipeable is deprecated in compose 1.6.0, this library provides a new composable widget AnchoredDragBox 
 that can be dragged to show the action buttons in version 1.3.0. 
