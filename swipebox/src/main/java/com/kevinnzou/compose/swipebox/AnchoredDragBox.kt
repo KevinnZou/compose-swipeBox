@@ -110,13 +110,12 @@ fun AnchoredDragBox(
     val endContentLiveWidth = endContentWidth * endSwipeProgress
     Box(
         modifier = modifier
-            .height(IntrinsicSize.Min)
             .clipToBounds()
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
+                .matchParentSize(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = when (swipeDirection) {
                 SwipeDirection.StartToEnd -> Arrangement.Start

@@ -4,17 +4,24 @@ package com.kevinnzou.compose.composeswipebox
  * Created By Kevin Zou On 2024/2/1
  */
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.animateTo
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +33,7 @@ import com.kevinnzou.compose.swipebox.AnchoredDragBox
 import com.kevinnzou.compose.swipebox.DragAnchors
 import com.kevinnzou.compose.swipebox.SwipeDirection
 import com.kevinnzou.compose.swipebox.rememberAnchoredDraggableState
+import com.kevinnzou.compose.swipebox.widget.SwipeContent
 import com.kevinnzou.compose.swipebox.widget.SwipeText
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
@@ -215,4 +223,61 @@ fun AnchoredDragBoxWithText(
 @Composable
 fun PreviewAnchoredDragBoxWithText() {
     AnchoredDragBoxWithText()
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun AnchoredDragBoxWithIconAndText(
+    id: Int = 0,
+    onAnchoredDragStateChanged: (AnchoredDraggableState<DragAnchors>) -> Unit = {}
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val anchoredDraggableState = rememberAnchoredDraggableState(id)
+    AnchoredDragBox(
+        modifier = Modifier.fillMaxWidth(),
+        state = anchoredDraggableState,
+        swipeDirection = SwipeDirection.EndToStart,
+        endContentWidth = 70.dp,
+        endContent = { anchoredDraggableState, endSwipeProgress ->
+            SwipeContent(
+                onClick = {
+                    coroutineScope.launch {
+                        anchoredDraggableState.animateTo(DragAnchors.Center)
+                    }
+                },
+                background = Color.Cyan
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = null,
+                        modifier = Modifier.requiredSize(24.dp)
+                    )
+                    Text(
+                        text = "Favorite",
+                        modifier = Modifier
+                            .requiredWidth(IntrinsicSize.Max)
+                    )
+                }
+            }
+        }
+    ) { _, _, _ ->
+        // callback on parent when the state targetValue changes which means it is swiping to another state.
+        LaunchedEffect(Unit) {
+            snapshotFlow { anchoredDraggableState.targetValue }
+                .drop(1) // drop the initial value
+                .distinctUntilChanged()
+                .collect {
+                    onAnchoredDragStateChanged(anchoredDraggableState)
+                }
+        }
+        mainContent("Swipe Left Icon and Text")
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Preview
+@Composable
+fun PreviewAnchoredDragBoxWithIconAndText() {
+    AnchoredDragBoxWithIconAndText()
 }
