@@ -96,16 +96,12 @@ fun AnchoredDragBox(
         SwipeDirection.EndToStart -> Float.NEGATIVE_INFINITY..0f
         SwipeDirection.Both -> Float.NEGATIVE_INFINITY..Float.POSITIVE_INFINITY
     }
-    val startSwipeProgress by animateFloatAsState(
-        targetValue = if (state.requireOffset() > 0f) {
-            (state.requireOffset() / startWidthPx).absoluteValue
-        } else 0f, label = "startSwipeProgress"
-    )
-    val endSwipeProgress by animateFloatAsState(
-        targetValue = if (state.requireOffset() < 0f) {
-            (state.requireOffset() / endWidthPx).absoluteValue
-        } else 0f, label = "endSwipeProgress"
-    )
+    val startSwipeProgress = if (state.requireOffset() > 0f) {
+        (state.requireOffset() / startWidthPx).absoluteValue
+    } else 0f
+    val endSwipeProgress = if (state.requireOffset() < 0f) {
+        (state.requireOffset() / endWidthPx).absoluteValue
+    } else 0f
     val startContentLiveWidth = startContentWidth * startSwipeProgress
     val endContentLiveWidth = endContentWidth * endSwipeProgress
     Box(
