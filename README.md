@@ -262,7 +262,7 @@ For full example, please refer to [SwipeBoxList](https://github.com/KevinnZou/co
 # Download
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.kevinnzou/compose-swipebox.svg)](https://search.maven.org/artifact/io.github.kevinnzou/compose-swipebox)
 
-The Current Release Version is 1.2.0. For future release, please refer to the release session of the
+The Current Release Version is 1.4.0. For future release, please refer to the release session of the
 github repository.
 
 ``` kotlin
@@ -273,7 +273,7 @@ allprojects {
 }
 
 dependencies {
-    implementation("io.github.kevinnzou:compose-swipebox:1.3.0")
+    implementation("io.github.kevinnzou:compose-swipebox:1.4.0")
 }
 
 ```
