@@ -245,18 +245,20 @@ fun AnchoredDragBoxWithIconAndText(
                         anchoredDraggableState.animateTo(DragAnchors.Center)
                     }
                 },
-                background = Color.Cyan
+                background = Color(0xFFFFB133)
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
                         contentDescription = null,
+                        tint = Color.White,
                         modifier = Modifier.requiredSize(24.dp)
                     )
                     Text(
                         text = "Favorite",
                         modifier = Modifier
-                            .requiredWidth(IntrinsicSize.Max)
+                            .requiredWidth(IntrinsicSize.Max),
+                        color = Color.White,
                     )
                 }
             }
